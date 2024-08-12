@@ -1,31 +1,20 @@
 package com.biblioteca.gestion.datos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
 @Entity
-@Document(collection = "prestamos")
 public class Prestamo {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "libro_id")
-    private Libro libro;
+    private Long usuarioId;
+    private Long libroId;
+    private String fechaPrestamo;
+    private String fechaDevolucion;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
-
-    private LocalDate fechaPrestamo;
-    private LocalDate fechaDevolucion;
-
-    // Getters y Setters
+    // Getters y setters
 
     public Long getId() {
         return id;
@@ -35,35 +24,35 @@ public class Prestamo {
         this.id = id;
     }
 
-    public Libro getLibro() {
-        return libro;
+    public Long getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setLibro(Libro libro) {
-        this.libro = libro;
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getLibroId() {
+        return libroId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setLibroId(Long libroId) {
+        this.libroId = libroId;
     }
 
-    public LocalDate getFechaPrestamo() {
+    public String getFechaPrestamo() {
         return fechaPrestamo;
     }
 
-    public void setFechaPrestamo(LocalDate fechaPrestamo) {
+    public void setFechaPrestamo(String fechaPrestamo) {
         this.fechaPrestamo = fechaPrestamo;
     }
 
-    public LocalDate getFechaDevolucion() {
+    public String getFechaDevolucion() {
         return fechaDevolucion;
     }
 
-    public void setFechaDevolucion(LocalDate fechaDevolucion) {
+    public void setFechaDevolucion(String fechaDevolucion) {
         this.fechaDevolucion = fechaDevolucion;
     }
 }
