@@ -26,4 +26,6 @@ public class PrestamoController {
         Prestamo prestamo = prestamoService.devolverPrestamo(id);
         return ResponseEntity.ok(prestamo);
     }
+
+    // Otros endpoints como obtener todos los préstamos, etc.
 }

@@ -26,4 +26,6 @@ public class LibroController {
         Libro libro = libroService.obtenerLibroPorId(id);
         return ResponseEntity.ok(libro);
     }
+
+    // Otros endpoints como actualizar, eliminar, etc.
 }
