@@ -1,21 +1,18 @@
 package com.biblioteca.gestion.datos;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import jakarta.persistence.*;
 
 @Entity
-@Document(collection = "libros")
 public class Libro {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String titulo;
     private String autor;
-    private String isbn;
-    private int copiasDisponibles;
-
+    private Integer copiasDisponibles;
     // Getters y Setters
+
     public Long getId() {
         return id;
     }
@@ -38,14 +35,6 @@ public class Libro {
 
     public void setAutor(String autor) {
         this.autor = autor;
-    }
-
-    public String getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
     }
 
     public int getCopiasDisponibles() {

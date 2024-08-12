@@ -19,6 +19,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest ->
                         authRequest
                                 .anyRequest().permitAll() // Permite todas las solicitudes sin autenticación
+
                 );
 
         return http.build();

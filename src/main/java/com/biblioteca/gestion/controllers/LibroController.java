@@ -1,65 +1,52 @@
 package com.biblioteca.gestion.controllers;
 
-import com.biblioteca.gestion.Service.LibroService;
 import com.biblioteca.gestion.datos.Libro;
-import jakarta.validation.Valid;
+import com.biblioteca.gestion.Service.LibroService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/libros")
-@Validated
+@RequestMapping("/libros")
 public class LibroController {
 
     private final LibroService libroService;
 
+    @Autowired
     public LibroController(LibroService libroService) {
         this.libroService = libroService;
     }
 
-    @PostMapping
-    public ResponseEntity<Libro> crearLibro(@Valid @RequestBody Libro libro) {
+    @PostMapping("/")
+    public ResponseEntity<Libro> crearLibro(@RequestBody Libro libro) {
         Libro nuevoLibro = libroService.guardarLibro(libro);
-        return new ResponseEntity<>(nuevoLibro, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoLibro);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Libro> obtenerLibroPorId(@PathVariable Long id) {
+    public ResponseEntity<Libro> obtenerLibro(@PathVariable Long id) {
         Libro libro = libroService.obtenerLibroPorId(id);
-        return ResponseEntity.ok(libro);
+        return new ResponseEntity<>(libro, HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<Libro>> buscarLibros(
-            @RequestParam(value = "titulo", required = false) String titulo,
-            @RequestParam(value = "autor", required = false) String autor) {
-        List<Libro> libros;
-        if (titulo != null) {
-            libros = libroService.buscarLibrosPorTitulo(titulo);
-        } else if (autor != null) {
-            libros = libroService.buscarLibrosPorAutor(autor);
-        } else {
-            libros = libroService.obtenerTodosLosLibros();
-        }
-        return ResponseEntity.ok(libros);
+    @GetMapping
+    public ResponseEntity<List<Libro>> obtenerTodosLosLibros() {
+        List<Libro> libros = libroService.obtenerTodosLosLibros();
+        return new ResponseEntity<>(libros, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/copias")
-    public ResponseEntity<Libro> actualizarCopiasDisponibles(
-            @PathVariable Long id,
-            @RequestParam int cantidad) {
-        Libro libroActualizado = libroService.actualizarCopiasDisponibles(id, cantidad);
-        return ResponseEntity.ok(libroActualizado);
+    @PutMapping("/{id}")
+    public ResponseEntity<Libro> actualizarLibro(@PathVariable Long id, @RequestBody Libro libroDetalles) {
+        Libro libroActualizado = libroService.actualizarLibro(id, libroDetalles);
+        return new ResponseEntity<>(libroActualizado, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarLibro(@PathVariable Long id) {
         libroService.eliminarLibro(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
