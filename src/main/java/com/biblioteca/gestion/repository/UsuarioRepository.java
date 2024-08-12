@@ -1,4 +1,4 @@
-package com.biblioteca.gestion.interfaces;
+package com.biblioteca.gestion.repository;
 
 import com.biblioteca.gestion.datos.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;

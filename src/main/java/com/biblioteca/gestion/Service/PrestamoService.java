@@ -3,9 +3,10 @@ package com.biblioteca.gestion.Service;
 import com.biblioteca.gestion.datos.Libro;
 import com.biblioteca.gestion.datos.Prestamo;
 import com.biblioteca.gestion.datos.Usuario;
-import com.biblioteca.gestion.interfaces.LibroRepository;
-import com.biblioteca.gestion.interfaces.PrestamoRepository;
-import com.biblioteca.gestion.interfaces.UsuarioRepository;
+import com.biblioteca.gestion.exception.PrestamoNotFoundException;
+import com.biblioteca.gestion.repository.LibroRepository;
+import com.biblioteca.gestion.repository.PrestamoRepository;
+import com.biblioteca.gestion.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +67,30 @@ public class PrestamoService {
 
     public Prestamo obtenerPrestamoPorId(Long id) {
         return prestamoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Préstamo no encontrado"));
+                .orElseThrow(() -> new PrestamoNotFoundException(id));
     }
+
+    public List<Prestamo> buscarPrestamosPorUsuario(Long usuarioId) {
+        return prestamoRepository.findByUsuarioId(usuarioId);
+    }
+
+    public List<Prestamo> buscarPrestamosPorLibro(Long libroId) {
+        return prestamoRepository.findByLibroId(libroId);
+    }
+
+    public Prestamo actualizarPrestamo(Long id, Prestamo prestamoDetalles) {
+        Prestamo prestamoExistente = prestamoRepository.findById(id)
+                .orElseThrow(() -> new PrestamoNotFoundException(id));
+
+        prestamoExistente.setFechaDevolucion(prestamoDetalles.getFechaDevolucion());
+        return prestamoRepository.save(prestamoExistente);
+    }
+
+    public void eliminarPrestamo(Long id) {
+        Prestamo prestamo = prestamoRepository.findById(id)
+                .orElseThrow(() -> new PrestamoNotFoundException(id));
+
+        prestamoRepository.delete(prestamo);
+    }
+
 }

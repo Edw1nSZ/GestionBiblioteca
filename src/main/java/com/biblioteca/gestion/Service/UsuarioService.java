@@ -1,7 +1,7 @@
 package com.biblioteca.gestion.Service;
 
 import com.biblioteca.gestion.datos.Usuario;
-import com.biblioteca.gestion.interfaces.UsuarioRepository;
+import com.biblioteca.gestion.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
