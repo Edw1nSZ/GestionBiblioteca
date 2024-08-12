@@ -3,20 +3,24 @@ package com.biblioteca.gestion.Service;
 import com.biblioteca.gestion.datos.Usuario;
 import com.biblioteca.gestion.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
-    //metodos CRUD
+    private final BCryptPasswordEncoder passwordEncoder;
+
     @Autowired
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public Usuario guardarUsuario(Usuario usuario) {
+        // Encriptar la contraseña antes de guardar
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         return usuarioRepository.save(usuario);
     }
 
@@ -35,6 +39,11 @@ public class UsuarioService {
 
         usuarioExistente.setNombre(usuarioDetalles.getNombre());
         usuarioExistente.setEmail(usuarioDetalles.getEmail());
+
+        // Actualizar la contraseña solo si se proporciona una nueva
+        if (usuarioDetalles.getPassword() != null && !usuarioDetalles.getPassword().isEmpty()) {
+            usuarioExistente.setPassword(passwordEncoder.encode(usuarioDetalles.getPassword()));
+        }
 
         return usuarioRepository.save(usuarioExistente);
     }
