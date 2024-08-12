@@ -1,13 +1,13 @@
 package com.biblioteca.gestion.repository;
 
-import com.biblioteca.gestion.datos.Libro;
 import com.biblioteca.gestion.datos.Prestamo;
-import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-public interface PrestamoRepository extends MongoRepository<Prestamo, Long> {
-    // Buscar Id usuario
+@Repository
+public interface PrestamoRepository extends JpaRepository<Prestamo, Long> {// Buscar Id usuario
     List<Prestamo> findByUsuarioId(Long usuarioId);
 
     // Buscar Id de libro

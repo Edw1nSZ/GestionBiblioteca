@@ -57,4 +57,7 @@ public class JwtService {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> Long.parseLong(claims.getSubject()));
+    }
 }
